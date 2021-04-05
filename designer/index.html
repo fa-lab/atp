@@ -1,0 +1,51 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+
+<html>
+
+<head>
+	<meta charset="utf-8" />
+	<link rel="stylesheet"
+		href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.6.0/css/bootstrap.min.css" />
+
+	<link rel="stylesheet" type="text/css" href="atp.css" />
+	<style type="text/css">
+		body {
+			font-family: tahoma, verdana, helvetica;
+			font-size: 0.8em;
+			padding: 10px;
+		}
+	</style>
+	<title>ATP Designer</title>
+</head>
+
+<body>
+	<div class="container-fluid">
+		<div class="my-4 text-center">
+			<h2>ATP Designer</h2>
+		</div>
+
+		<div class="my-4 text-center">
+			<a class="btn btn-primary" href="javascript:choose_file();">프로젝트 불러오기</a>
+			<a class="btn btn-primary" href="javascript:save_project();">프로젝트 저장하기</a>
+			<a class="btn btn-primary" href="javascript:export_data();">익스포트</a>
+		</div>
+		<div class="text-center">
+			<div style="overflow-x: auto;">
+				<div id="designer" oncontextmenu="return false;"></div>
+			</div>
+		</div>
+	</div>
+	<div id="color_pallet" class="ATPBox" led_color='r' led_bright='31'>
+		<p>100 %</p>
+	</div>
+	<div id="select_pallet"></div>
+	<input id="theFile" type="file" style="display:none;" accept=".json" onchange="onFileChoose(this)" />
+
+	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/datejs/1.0/date.min.js"></script>
+	<script scr="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.6.0/js/bootstrap.min.js"></script>
+	<script src="atp.js"></script>
+
+</body>
+
+</html>

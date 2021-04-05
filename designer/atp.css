@@ -1,0 +1,284 @@
+.ATPGrayBG {
+	background-color: rgba(50, 50, 50, 0.1);
+}
+
+#designer {
+	cursor: url('assets/002-pen.png'), auto;
+}
+
+#designer.erase_mode {
+	cursor: url('assets/001-eraser.png'), auto;
+}
+
+#designer.select_mode {
+	cursor: crosshair;
+}
+
+.ATPRow {
+	margin: 0px !important;
+	padding: 0px !important;
+	white-space: nowrap;
+	-webkit-touch-callout: none;
+	-webkit-user-select: none;
+	-khtml-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+}
+
+.ATPLabelBox {
+	display: inline-block;
+	width: 180px;
+	height: 30px;
+	border-right: 1px solid black;
+	border-left: 1px solid black;
+	border-bottom: 1px solid black;
+}
+
+.ATPHeadBox {
+	display: inline-block;
+	width: 120px;
+	height: 30px;
+	border-right: 1px solid black;
+	border-bottom: 1px solid black;
+	border-top: 1px solid black;
+}
+
+.ATPHeadBox p {
+	text-align: left;
+}
+
+.ATPHeadBox.first {
+	width: 180px !important;
+	border-left: 1px solid black;
+}
+
+.ATPBox {
+	display: inline-block;
+	width: 30px;
+	height: 30px;
+	border-right: 1px solid rgba(0, 0, 0, 0.1);
+	border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.ATPBox.separate {
+	border-right: 1px solid black !important;
+}
+
+.ATPBox.last {
+	border-bottom: 1px solid black !important;
+}
+
+.selected[led_color] {
+	animation-duration: 300ms;
+	animation-name: blink;
+	animation-iteration-count: infinite;
+	animation-direction: alternate;
+	animation-timing-function: ease-in-out;
+	cursor: move;
+}
+
+
+@keyframes blink {
+	0% {
+		opacity: 0;
+	}
+	20% {
+		opacity: 0.2;
+	}
+	40% {
+		opacity:
+			0.4;
+	}
+	60% {
+		opacity:
+			0.6;
+	}
+	80% {
+		opacity:
+			0.8;
+	}
+	100% {
+		opacity:
+			1.0;
+	}
+}
+		
+div.ATPBox[led_bright="1"] {
+	opacity: 20%;
+}
+
+div.ATPBox[led_bright="2"] {
+	opacity: 25%;
+}
+
+div.ATPBox[led_bright="3"] {
+	opacity: 33%;
+}
+
+div.ATPBox[led_bright="4"] {
+	opacity: 38%;
+}
+
+div.ATPBox[led_bright="5"] {
+	opacity: 43%;
+}
+
+div.ATPBox[led_bright="6"] {
+	opacity: 48%;
+}
+
+div.ATPBox[led_bright="7"] {
+	opacity: 51%;
+}
+
+div.ATPBox[led_bright="8"] {
+	opacity: 55%;
+}
+
+div.ATPBox[led_bright="9"] {
+	opacity: 58%;
+}
+
+div.ATPBox[led_bright="10"] {
+	opacity: 61%;
+}
+
+div.ATPBox[led_bright="11"] {
+	opacity: 63%;
+}
+
+div.ATPBox[led_bright="12"] {
+	opacity: 66%;
+}
+
+div.ATPBox[led_bright="13"] {
+	opacity: 68%;
+}
+
+div.ATPBox[led_bright="14"] {
+	opacity: 71%;
+}
+
+div.ATPBox[led_bright="15"] {
+	opacity: 73%;
+}
+
+div.ATPBox[led_bright="16"] {
+	opacity: 76%;
+}
+
+div.ATPBox[led_bright="17"] {
+	opacity: 78%;
+}
+
+div.ATPBox[led_bright="18"] {
+	opacity: 81%;
+}
+
+div.ATPBox[led_bright="19"] {
+	opacity: 83%;
+}
+
+div.ATPBox[led_bright="20"] {
+	opacity: 85%;
+}
+
+div.ATPBox[led_bright="21"] {
+	opacity: 87%;
+}
+
+div.ATPBox[led_bright="22"] {
+	opacity: 88%;
+}
+
+div.ATPBox[led_bright="23"] {
+	opacity: 90%;
+}
+
+div.ATPBox[led_bright="24"] {
+	opacity: 93%;
+}
+
+div.ATPBox[led_bright="25"] {
+	opacity: 94%;
+}
+
+div.ATPBox[led_bright="26"] {
+	opacity: 95%;
+}
+
+div.ATPBox[led_bright="27"] {
+	opacity: 96%;
+}
+
+div.ATPBox[led_bright="28"] {
+	opacity: 97%;
+}
+
+div.ATPBox[led_bright="29"] {
+	opacity: 98%;
+}
+
+div.ATPBox[led_bright="30"] {
+	opacity: 99%;
+}
+
+div.ATPBox[led_bright="31"] {
+	opacity: 100%;
+}
+
+div.ATPBox[led_color="r"] {
+	color: white;
+	background-color: #ff0000;
+}
+
+div.ATPBox[led_color="g"] {
+	background-color: #00ff00;
+}
+
+div.ATPBox[led_color="b"] {
+	color: white;
+	background-color: #0000ff;
+}
+
+div.ATPBox[led_color="rg"] {
+	background-color: #ffff00;
+}
+
+div.ATPBox[led_color="rb"] {
+	background-color: #ff00ff;
+}
+
+div.ATPBox[led_color="gb"] {
+	background-color: #00ffff;
+}
+
+div.ATPBox[led_color="rgb"] {
+	background-color: #eeeeee;
+}
+
+#color_pallet {
+	position: absolute;
+	vertical-align: middle;
+	text-align: center;
+	border-radius: 2px;
+	height: 48px;
+	width: 48px;
+	border: 1px solid black;
+}
+#color_pallet p{
+	position: absolute;
+	height: 48px;
+	width: 48px;
+	vertical-align: middle;
+	text-align: center;
+	line-height: 48px;
+}
+#select_pallet {
+	position: absolute !important;
+	height: 0px;
+	width: 0px;
+	border: 1px solid black ! important;
+	z-index: -1;
+}
