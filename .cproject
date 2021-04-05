@@ -25,6 +25,12 @@
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/ATP_ESP32/libraries/SD_MMC/src}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/ATP_ESP32/libraries/WiFi/src}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/ATP_ESP32/libraries/Adafruit_NeoPixel}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/atp/core/core}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/atp/core/variant}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/atp/libraries/Adafruit_NeoPixel}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/atp/libraries/FS/src}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/atp/libraries/SD_MMC/src}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/atp/libraries/WiFi/src}&quot;"/>
 								</option>
 								<inputType id="io.sloeber.compiler.cpp.sketch.input.107438989" name="CPP source files" superClass="io.sloeber.compiler.cpp.sketch.input"/>
 							</tool>
@@ -36,6 +42,12 @@
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/ATP_ESP32/libraries/SD_MMC/src}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/ATP_ESP32/libraries/WiFi/src}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/ATP_ESP32/libraries/Adafruit_NeoPixel}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/atp/core/core}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/atp/core/variant}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/atp/libraries/Adafruit_NeoPixel}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/atp/libraries/FS/src}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/atp/libraries/SD_MMC/src}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/atp/libraries/WiFi/src}&quot;"/>
 								</option>
 								<inputType id="io.sloeber.compiler.c.sketch.input.1015437001" name="C Source Files" superClass="io.sloeber.compiler.c.sketch.input"/>
 							</tool>
@@ -47,6 +59,12 @@
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/ATP_ESP32/libraries/SD_MMC/src}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/ATP_ESP32/libraries/WiFi/src}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/ATP_ESP32/libraries/Adafruit_NeoPixel}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/atp/core/core}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/atp/core/variant}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/atp/libraries/Adafruit_NeoPixel}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/atp/libraries/FS/src}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/atp/libraries/SD_MMC/src}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/atp/libraries/WiFi/src}&quot;"/>
 								</option>
 								<inputType id="io.sloeber.compiler.S.sketch.input.36626288" name="Assembly source files" superClass="io.sloeber.compiler.S.sketch.input"/>
 							</tool>
