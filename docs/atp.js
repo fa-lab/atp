@@ -8,10 +8,60 @@ const BRIGHT_MAP = [0, 20, 25, 33, 38, 43, 48, 51, 55, 58, 61, 63, 66, 68, 71, 7
 var RENDER_SIZE_SEC = 10;
 var IS_MOUSE_DOWN = false;
 
-const LED_CHANNELS = 16;
-const LED_MAX_SIZE = 6;
-const LED_ATPNODE_LED = 50;
 
+var LED_CHANNELS = 16;
+var LED_MAX_SIZE = 50;
+var LED_ATPNODE_LED = 50;
+
+location.hash = location.hash.trim();
+if (location.hash.length > 1) {
+	try {
+		var hash = location.hash.slice(1);
+
+		var tmp = hash.split(',', 2);
+
+		if (tmp.length == 2) {
+			LED_CHANNELS = parseInt(tmp[0]);
+			if (LED_CHANNELS > 16) {
+				LED_CHANNELS = 16;
+			}
+			if (LED_CHANNELS < 0) {
+				LED_CHANNELS = 1;
+			}
+			LED_MAX_SIZE = parseInt(tmp[1]);
+			if (LED_MAX_SIZE > 50) {
+				LED_MAX_SIZE = 50;
+			}
+			if (LED_MAX_SIZE < 0) {
+				LED_MAX_SIZE = 1;
+			}
+		}
+	} catch (e) {
+
+	}
+}
+
+$(".custom-select")[0].value = LED_CHANNELS;
+$(".custom-select")[1].value = LED_MAX_SIZE;
+
+
+function change_ch(e) {
+	if (confirm("기존 내용이 사라집니다. LED 채널을 변경합니까?")) {
+		location.hash = e.value + ',' + LED_MAX_SIZE;
+		location.reload();
+	} else {
+		e.value = LED_CHANNELS;
+	}
+}
+
+function change_max(e) {
+	if (confirm("기존 내용이 사라집니다. LED 개수를 변경합니까?")) {
+		location.hash = LED_CHANNELS + ',' + e.value;
+		location.reload();
+	} else {
+		e.value = LED_MAX_SIZE;
+	}
+}
 
 var EDITOR_MODE = 0;
 var EDITOR_TIME_PAGE = 0;
