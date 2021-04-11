@@ -1,9 +1,14 @@
 'use strict'
 
 var CURRENT_COLOR = 'r';
-var CURRENT_BRIGHT = 31;
 
-const BRIGHT_MAP = [0, 20, 25, 33, 38, 43, 48, 51, 55, 58, 61, 63, 66, 68, 71, 73, 76, 78, 81, 83, 85, 87, 88, 90, 93, 94, 95, 96, 97, 98, 99, 100];
+
+var CURRENT_BRIGHT = 28;
+// const MAX_BRIGHT = 31;
+// const BRIGHT_MAP = [0, 20, 25, 33, 38, 43, 48, 51, 55, 58, 61, 63, 66, 68, 71, 73, 76, 78, 81, 83, 85, 87, 88, 90, 93, 94, 95, 96, 97, 98, 99, 100]; Normal
+
+const MAX_BRIGHT = 28;
+const BRIGHT_MAP = [0, 20, 25, 33, 38, 43, 48, 51, 55, 58, 61, 63, 66, 68, 71, 73, 76, 78, 81, 83, 85, 87, 88, 90, 93, 94, 95, 96, 100]; // Economy
 
 var RENDER_SIZE_SEC = 10;
 var IS_MOUSE_DOWN = false;
@@ -12,6 +17,13 @@ var IS_MOUSE_DOWN = false;
 var LED_CHANNELS = 16;
 var LED_MAX_SIZE = 50;
 var LED_ATPNODE_LED = 50;
+
+
+var MOVE_ORIGIN;
+
+
+const TIME_RESOLUTION = 8;
+const TIME_TICKS = (1000 / TIME_RESOLUTION);
 
 location.hash = location.hash.trim();
 if (location.hash.length > 1) {
@@ -43,7 +55,6 @@ if (location.hash.length > 1) {
 
 $(".custom-select")[0].value = LED_CHANNELS;
 $(".custom-select")[1].value = LED_MAX_SIZE;
-
 
 function change_ch(e) {
 	if (confirm("기존 내용이 사라집니다. LED 채널을 변경합니까?")) {
@@ -82,6 +93,8 @@ var dom_selection = document.getElementById('select_pallet');
 
 var editor_datas = [];
 var dom_arrays = [];
+var prev_datas = [];
+
 function onFileChoose(input) {
 	if (input.files && input.files[0]) {
 		var oFReader = new FileReader();
@@ -311,14 +324,14 @@ function export_data() {
 		for (var t_idx = 0; t_idx < RENDER_SIZE_SEC * 4; t_idx++) {
 			if (t_datas[t_idx]) {
 				if ((t_idx - last_t_idx) > 1) {
-					target_t = start_t + 250 * (last_t_idx + 1);
+					target_t = start_t + TIME_TICKS * (last_t_idx + 1);
 
 					dt = target_t - last_t;
 					// console.log('APPEND', target_t, dt, 'CLEAR');
 					getAsData(dt);
 					last_t = target_t;
 				}
-				target_t = start_t + 250 * t_idx;
+				target_t = start_t + TIME_TICKS * t_idx;
 				dt = target_t - last_t;
 				// console.log('APPEND', target_t, dt, t_datas[t_idx]);
 				getAsData(dt, t_datas[t_idx]);
@@ -328,9 +341,8 @@ function export_data() {
 
 		}
 	}
-	target_t = target_t + 250;
-	// console.log('APPEND', target_t, 250, 'CLEAR');
-	getAsData(250);
+	target_t = target_t + TIME_TICKS;
+	getAsData(TIME_TICKS);
 
 	var blob = new Blob(bin_data, { type: "application/octet-stream" });
 	downloadBlob(blob);
@@ -355,7 +367,8 @@ $("#designer").on('mousedown', function(e) {
 	if (EDITOR_MODE == EDITOR_SELECT_MODE) {
 		if ($(e.target).hasClass('selected')) {
 			console.log('Actions HERE!');
-			console.log(e);
+			console.log(e.target);
+			MOVE_ORIGIN = e.target;
 			dom_selection.startX = e.clientX;
 			dom_selection.startY = e.clientY + window.scrollY;
 			IS_MOVE = true;
@@ -374,15 +387,20 @@ $("#designer").on('mouseup', function(e) {
 	if (EDITOR_MODE == EDITOR_SELECT_MODE) {
 		IS_SELECTED = true;
 		if (IS_MOVE) {
-			let dx = e.clientX - dom_selection.startX;
-			let dy = (e.clientY + window.scrollY) - dom_selection.startY;
-
-			dx = Math.floor(dx / 30);
-			dy = Math.floor(dy / 30);
-
-			console.log(dx, dy);
-			move_block(dx, dy, IS_CTRL_PRESSED);
-			IS_MOVE = false;
+			console.log(e.button);
+			if (e.button == 0) { // Left
+				let dx_idx = e.target.getAttribute('time_index') - MOVE_ORIGIN.getAttribute('time_index');
+				let dy_idx = (parseInt(e.target.getAttribute('led_ch')) * LED_MAX_SIZE + parseInt(e.target.getAttribute('led_index'))) - (parseInt(MOVE_ORIGIN.getAttribute('led_ch')) * LED_MAX_SIZE + parseInt(MOVE_ORIGIN.getAttribute('led_index')));
+				move_block(dx_idx, dy_idx, IS_CTRL_PRESSED);
+				IS_MOVE = false;
+			} else if (e.button == 2) { // Right
+				console.log('Right Click');
+				let selected = $(".ATPBox.selected:not(#color_pallet)");
+				console.log(selected);
+				selected.attr('led_color', CURRENT_COLOR);
+				selected.attr('led_bright', CURRENT_BRIGHT);
+				selected.attr('title', BRIGHT_MAP[CURRENT_BRIGHT] + ' %');
+			}
 		}
 		dom_selection.style.width = 0 + 'px';
 		dom_selection.style.height = 0 + 'px';
@@ -455,16 +473,15 @@ window.onkeydown = function(e) {
 window.onkeyup = function(e) {
 	var keyCode = e.keyCode;
 
-
-	if (keyCode == 39) {
+	if (keyCode == 39) { // Arrow Right
 		onChangePage(1);
 
 		return;
-	} else if (keyCode == 37) {
+	} else if (keyCode == 37) { // Arrow Left
 		if (EDITOR_TIME_PAGE > 0) {
 			onChangePage(-1);
 		}
-	} else if (keyCode == 46) {
+	} else if (keyCode == 46) { // Del
 		if (IS_SELECTED) {
 			IS_SELECTED = false;
 			let selected = $(".selected");
@@ -473,56 +490,95 @@ window.onkeyup = function(e) {
 			selected.removeAttr('title');
 			selected.removeClass("selected");
 		}
-	} else if (keyCode == 17) {
+	} else if (keyCode == 17) { // Ctrl
 		IS_CTRL_PRESSED = false;
+	} else if (keyCode == 27) { // Escape
+		let selected = $(".selected");
+		selected.removeClass("selected");
 	}
 	console.log(keyCode);
 
-	switch (e.key) {
-		case '1':
+	switch (keyCode) {
+		case 49:
 			change_color('r');
 			break;
-		case '2':
+		case 50:
 			change_color('g');
 			break;
-		case '3':
+		case 51:
 			change_color('b');
 			break;
-		case '4':
+		case 52:
 			change_color('rg');
 			break;
-		case '5':
+		case 53:
 			change_color('gb');
 			break;
-		case '6':
+		case 54:
 			change_color('rb');
 			break;
-		case '7':
+		case 55:
 			change_color('rgb');
 			break;
-		case '+':
+		case 107: // Plus
+		case 187: // Plus
 			change_bright(CURRENT_BRIGHT + 1);
 			break;
-		case '-':
+		case 109: // Minus
+		case 189:
 			change_bright(CURRENT_BRIGHT - 1);
 			break;
-		case 's':
+		case 83: // 's'
 			if (EDITOR_MODE != EDITOR_SELECT_MODE) {
 				EDITOR_MODE = EDITOR_SELECT_MODE;
 				onModeChanged();
 			}
 			break;
-		case 'w':
+		case 87: // 'w'
 			if (EDITOR_MODE != EDITOR_WRITE_MODE) {
 				EDITOR_MODE = EDITOR_WRITE_MODE;
 				onModeChanged();
 			}
 			break;
-		case 'e':
+		case 69: // 'e'
 			if (EDITOR_MODE != EDITOR_ERASE_MODE) {
 				EDITOR_MODE = EDITOR_ERASE_MODE;
 				onModeChanged();
 			}
+			break;
+		case 90: // 'z'
+			if (IS_CTRL_PRESSED) {
+				console.log('Revert!');
+			}
+		case 96:
+			change_bright(1);
+			break;
+		case 97:
+			change_bright(4);
+			break;
+		case 98:
+			change_bright(7);
+			break;
+		case 99:
+			change_bright(10);
+			break;
+		case 100:
+			change_bright(13);
+			break;
+		case 101:
+			change_bright(16);
+			break;
+		case 102:
+			change_bright(19);
+			break;
+		case 103:
+			change_bright(22);
+			break;
+		case 104:
+			change_bright(25);
+			break;
+		case 105:
+			change_bright(28);
 			break;
 	}
 	e.preventDefault();
@@ -534,8 +590,8 @@ function change_color(color) {
 }
 
 function change_bright(bright) {
-	if (bright > 31)
-		bright = 31;
+	if (bright > MAX_BRIGHT)
+		bright = MAX_BRIGHT;
 	if (bright < 1)
 		bright = 1;
 
@@ -578,7 +634,7 @@ function move_block(offset_time, offset_led, is_copy) {
 
 		if (v[0] < 0 || v[0] >= (LED_CHANNELS * LED_MAX_SIZE))
 			continue;
-		if (v[1] < 0 || v[1] >= (RENDER_SIZE_SEC * 4))
+		if (v[1] < 0 || v[1] >= (RENDER_SIZE_SEC * TIME_RESOLUTION))
 			continue;
 
 		let target = dom_arrays[v[0]][v[1]];
@@ -646,7 +702,7 @@ function init_timeline(dom_row, row_ch, row_led_idx) {
 	var dom_tl_arrays = [];
 
 
-	for (var col = 0; col < RENDER_SIZE_SEC * 4; col++) {
+	for (var col = 0; col < RENDER_SIZE_SEC * TIME_RESOLUTION; col++) {
 		if (row_led_idx == LED_MAX_SIZE - 1) {
 			var box = $('<div></div>', { class: "ATPBox last" });
 		} else {
@@ -658,7 +714,7 @@ function init_timeline(dom_row, row_ch, row_led_idx) {
 		box.attr('led_index', row_led_idx);
 		box.attr('time_index', col);
 
-		if (col % 4 == 3) {
+		if (col % TIME_RESOLUTION == (TIME_RESOLUTION - 1)) {
 			box.addClass('separate');
 		}
 
