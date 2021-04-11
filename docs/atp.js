@@ -321,7 +321,7 @@ function export_data() {
 
 		var t_datas = editor_datas[page];
 		var last_t_idx = -1;
-		for (var t_idx = 0; t_idx < RENDER_SIZE_SEC * 4; t_idx++) {
+		for (var t_idx = 0; t_idx < RENDER_SIZE_SEC * TIME_RESOLUTION; t_idx++) {
 			if (t_datas[t_idx]) {
 				if ((t_idx - last_t_idx) > 1) {
 					target_t = start_t + TIME_TICKS * (last_t_idx + 1);
