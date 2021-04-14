@@ -193,6 +193,10 @@ function getAsData(dt, data) {
 	} else {
 		var str = '!' + dt + ',65535;';
 		var enc = new TextEncoder();
+		
+		for (var i = 0; i < LED_ATPNODE_LED; i++) {
+			data_buffer[i] = 0;
+		}
 
 		var uarr_str = enc.encode(str);
 		var uarr_data = new Uint8Array(data_buffer);
