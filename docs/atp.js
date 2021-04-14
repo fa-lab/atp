@@ -22,7 +22,7 @@ var LED_ATPNODE_LED = 50;
 var MOVE_ORIGIN;
 
 
-const TIME_RESOLUTION = 8;
+const TIME_RESOLUTION = 4;
 const TIME_TICKS = (1000 / TIME_RESOLUTION);
 
 location.hash = location.hash.trim();
