@@ -22,7 +22,7 @@ var LED_ATPNODE_LED = 50;
 var MOVE_ORIGIN;
 
 
-const TIME_RESOLUTION = 4;
+const TIME_RESOLUTION = 8;
 const TIME_TICKS = (1000 / TIME_RESOLUTION);
 
 location.hash = location.hash.trim();
@@ -140,11 +140,11 @@ for (var i = 0; i < LED_ATPNODE_LED; i++) {
 
 var bin_data = [];
 function getAsData(dt, data) {
-	for (var i = 0; i < LED_ATPNODE_LED; i++) {
-		data_buffer[i] = 0;
-	}
 	if (data) {
 		for (var led_ch in data) {
+			for (var i = 0; i < LED_ATPNODE_LED; i++) {
+				data_buffer[i] = 0;
+			}
 			for (var led_index in data[led_ch]) {
 				let color = data[led_ch][led_index][0];
 				let bright = parseInt(data[led_ch][led_index][1]);
