@@ -193,7 +193,7 @@ function getAsData(dt, data) {
 	} else {
 		var str = '!' + dt + ',65535;';
 		var enc = new TextEncoder();
-		
+
 		for (var i = 0; i < LED_ATPNODE_LED; i++) {
 			data_buffer[i] = 0;
 		}
@@ -292,6 +292,26 @@ function save_project() {
 function choose_file() {
 	document.getElementById('theFile').click();
 }
+function save_to_prevs() {
+	prev_datas = [];
+	let selected = get_composed_all();
+	for (let i = 0; i < selected.length; i++) {
+		let led_ch = parseInt(selected[i].getAttribute('led_ch'));
+		let led_index = parseInt(selected[i].getAttribute('led_index'));
+		let time_index = parseInt(selected[i].getAttribute('time_index'));
+		let led_color = selected[i].getAttribute('led_color');
+		let led_bright = selected[i].getAttribute('led_bright');
+
+		if (!prev_datas[time_index]) {
+			prev_datas[time_index] = {};
+		}
+		if (!prev_datas[time_index][led_ch]) {
+			prev_datas[time_index][led_ch] = {};
+		}
+		prev_datas[time_index][led_ch][led_index] = [led_color, led_bright];
+	}
+	console.log('save', prev_datas);
+}
 
 function save_to_vars() {
 	editor_datas[EDITOR_TIME_PAGE] = {};
@@ -311,7 +331,6 @@ function save_to_vars() {
 		}
 		editor_datas[EDITOR_TIME_PAGE][time_index][led_ch][led_index] = [led_color, led_bright];
 	}
-
 }
 function export_data() {
 	save_to_vars();
@@ -384,6 +403,7 @@ $("#designer").on('mousedown', function(e) {
 			dom_selection.startY = e.clientY + window.scrollY;
 		}
 	}
+	save_to_prevs();
 	IS_MOUSE_DOWN = true;
 });
 
@@ -552,8 +572,30 @@ window.onkeyup = function(e) {
 			break;
 		case 90: // 'z'
 			if (IS_CTRL_PRESSED) {
-				console.log('Revert!');
+				if (prev_datas) {
+					clear_all();
+					let newData = prev_datas;
+					for (var time_idx in newData) {
+						for (var led_ch in newData[time_idx]) {
+							led_ch = parseInt(led_ch);
+
+							for (var led_index in newData[time_idx][led_ch]) {
+								led_index = parseInt(led_index);
+								let led_color = newData[time_idx][led_ch][led_index][0];
+								let led_bright = parseInt(newData[time_idx][led_ch][led_index][1]);
+
+								let target = dom_arrays[led_ch * LED_MAX_SIZE + led_index][time_idx];
+
+								target.setAttribute('led_color', led_color);
+								target.setAttribute('led_bright', led_bright);
+								target.setAttribute('title', BRIGHT_MAP[led_bright] + ' %');
+							}
+						}
+					}
+				}
+				prev_datas = null;
 			}
+			break;
 		case 96:
 			change_bright(1);
 			break;
