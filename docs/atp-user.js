@@ -14,9 +14,11 @@ function move_block(row_offset, col_offset) {
 		let col = parseInt(table_selected[i].getAttribute('col'));
 		targets.push([row + row_offset, col + col_offset, table_selected[i].getAttribute('led_color'), table_selected[i].getAttribute('led_bright')]);
 
-		table_selected[i].removeAttribute('led_color');
-		table_selected[i].removeAttribute('led_bright');
-		table_selected[i].removeAttribute('title');
+		if (!IS_CTRL_PRESSED) {
+			table_selected[i].removeAttribute('led_color');
+			table_selected[i].removeAttribute('led_bright');
+			table_selected[i].removeAttribute('title');
+		}
 	}
 	clearSelection();
 	for (let i = 0; i < targets.length; i++) {
@@ -33,7 +35,7 @@ function move_block(row_offset, col_offset) {
 			table_elements[row][col].className = (table_elements[row][col].className.replace('selected', '') + ' selected').trim();
 		}
 	}
-	syncData();;
+	syncData();
 
 }
 
@@ -145,7 +147,7 @@ window.onkeydown = function(evt) {
 				return;
 			} else {
 				LED_OFFSET -= 5;
-				if (LED_OFFSET  < 0) {
+				if (LED_OFFSET < 0) {
 					LED_OFFSET = 0;
 				}
 				update_table();
@@ -244,11 +246,14 @@ document.getElementById('designer').onmouseup = function(e) {
 				move_block(t_row - dom_selection.row, t_col - dom_selection.col);
 			} else if (e.button == 2) { // Right
 				console.log('Right Click');
-				let selected = $(".ATPBox.selected:not(#color_pallet)");
-				console.log(selected);
-				selected.attr('led_color', CURRENT_COLOR);
-				selected.attr('led_bright', CURRENT_BRIGHT);
-				selected.attr('title', BRIGHT_MAP[CURRENT_BRIGHT] + ' %');
+
+				for (let i = 0; i < table_selected.length; i++) {
+					table_selected[i].setAttribute('led_color', CURRENT_COLOR);
+					table_selected[i].setAttribute('led_bright', CURRENT_BRIGHT);
+					table_selected[i].setAttribute('title', BRIGHT_MAP[CURRENT_BRIGHT] + ' %');
+
+				}
+				syncData();
 			}
 		} else {
 			for (let row = box_top; row < box_bottom; row++) {

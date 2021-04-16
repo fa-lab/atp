@@ -228,8 +228,8 @@ function choose_file() {
 }
 
 function export_data() {
-	
-	let	designer_data = {};
+
+	let designer_data = {};
 	for (var i = 0; i < localStorage.length; i++) {
 		if (localStorage.key(i).startsWith('atp_data_')) {
 			let key = localStorage.key(i);
@@ -319,9 +319,8 @@ function export_data() {
 	target_t = target_t + TIME_TICKS;
 	getAsData(TIME_TICKS);
 
-	console.log(bin_data);
-	//var blob = new Blob(bin_data, { type: "application/octet-stream" });
-	//downloadBlob(blob);
+	var blob = new Blob(bin_data, { type: "application/octet-stream" });
+	downloadBlob(blob);
 }
 
 function get_composed_all() {
