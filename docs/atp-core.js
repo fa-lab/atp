@@ -140,6 +140,13 @@ function downloadBlob(blob, name = 'data.atp') {
 	document.body.removeChild(link);
 }
 
+function new_project() {
+	var r = confirm("기존 내역이 모두 삭제됩니다.");
+	if (r == true) {
+		localStorage.clear(); location.reload();
+	}
+}
+
 function load_project(jsonTxT) {
 	let fj_result = JSON.parse(jsonTxT);
 	let editor_datas = fj_result.project_data;
