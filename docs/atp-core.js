@@ -229,7 +229,7 @@ function choose_file() {
 
 function export_data() {
 
-	let designer_data = {};
+	designer_data = {};
 	for (var i = 0; i < localStorage.length; i++) {
 		if (localStorage.key(i).startsWith('atp_data_')) {
 			let key = localStorage.key(i);
@@ -278,6 +278,7 @@ function export_data() {
 
 				let val = designer_data[sec][ti][li];
 				val = val.split(',', 2);
+
 
 				t_datas[sec * 8 + ti][Math.floor(li / LED_MAX_SIZE)][li % LED_MAX_SIZE][0] = val[0];
 				t_datas[sec * 8 + ti][Math.floor(li / LED_MAX_SIZE)][li % LED_MAX_SIZE][1] = parseInt(val[1]);
