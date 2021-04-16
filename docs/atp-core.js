@@ -448,16 +448,25 @@ function delData(row, col) {
 	let seconds = TIMELINE_OFFSET + Math.floor(col / TIME_DIV);
 	let time_idx = col % TIME_DIV;
 	let led_idx = LED_OFFSET + row;
-	if (!data[seconds]) {
-		data[seconds] = [];
+	if (!designer_data[seconds]) {
+		designer_data[seconds] = {};
 	}
-	if (!data[seconds][time_idx]) {
-		data[seconds][time_idx] = [];
+	if (!designer_data[seconds][time_idx]) {
+		designer_data[seconds][time_idx] = {};
 	}
-	if (!data[seconds][time_idx][led_idx]) {
-		data[seconds][time_idx][led_idx] = [];
+	if (!designer_data[seconds][time_idx][led_idx]) {
+		designer_data[seconds][time_idx][led_idx] = {};
 	}
-	data[seconds][time_idx].splice(led_idx, 1);
+
+	delete designer_data[seconds][time_idx][led_idx];
+
+	if (Object.keys(designer_data[seconds][time_idx]).length === 0) {
+		delete designer_data[seconds][time_idx];
+	}
+
+	if (Object.keys(designer_data[seconds]).length === 0) {
+		delete designer_data[seconds];
+	}
 }
 
 function update_table() {
@@ -583,6 +592,7 @@ function init_table() {
 						this.removeAttribute('led_color');
 						this.removeAttribute('led_bright');
 						this.removeAttribute('title');
+						console.log('del', row, col);
 						delData(row, col);
 					}
 				}
