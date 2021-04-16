@@ -44,6 +44,7 @@ window.onkeyup = function(e) {
 
 	if (keyCode == 46) { // Del
 		delSelection();
+		saveLocalStorage();
 	} else if (keyCode == 17) { // Ctrl
 		console.log('Ctrl Released');
 		IS_CTRL_PRESSED = false;

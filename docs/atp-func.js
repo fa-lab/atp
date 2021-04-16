@@ -40,8 +40,7 @@ function delSelection() {
 		table_selected[i].removeAttribute('led_color');
 		table_selected[i].removeAttribute('led_bright');
 		table_selected[i].removeAttribute('title');
-		table_selected[i].className = table_selected[i].className.replace('selected', '');
-
+		table_selected[i].className = table_selected[i].className.replace('selected', '').trim();
 	}
 	table_selected = [];
 	syncData();
