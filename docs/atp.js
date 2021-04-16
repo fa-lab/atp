@@ -331,6 +331,7 @@ function save_to_vars() {
 		}
 		editor_datas[EDITOR_TIME_PAGE][time_index][led_ch][led_index] = [led_color, led_bright];
 	}
+	localStorage['atp_data'] = JSON.stringify(editor_datas);
 }
 function export_data() {
 	save_to_vars();
@@ -450,6 +451,8 @@ $("#designer").on('mouseup', function(e) {
 				}
 			}
 		}
+	}else{
+		save_to_vars();
 	}
 	IS_MOUSE_DOWN = false;
 });

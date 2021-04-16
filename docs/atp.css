@@ -61,6 +61,13 @@
 	border-bottom: 1px solid rgba(0, 0, 0, 0.1);
 }
 
+.ATPSimBox {
+	width: 15px !important;
+	height: 15px !important;
+	border: 1px solid rgba(0, 0, 0, 0.1) !important;
+	margin: 3px !important;
+}
+
 .ATPBox:hover {
 	border-right: 2px solid rgba(0, 0, 0, 1.0);
 	border-bottom: 2px solid rgba(0, 0, 0, 1.0);
@@ -82,7 +89,6 @@
 	animation-timing-function: ease-in-out;
 	cursor: move;
 }
-
 
 @keyframes blink {
 	0% {
