@@ -97,7 +97,13 @@ function saveLocalStorage() {
 			const [time_index, v2] = e2;
 			Object.entries(v2).forEach(e3 => {
 				const [led_index, v3] = e3;
-				data += (time_index + ',' + led_index + ',' + v3 + ';');
+				let spl = v3.split(',', 2);
+				let c = spl[0];
+				let b = parseInt(spl[1]);
+				if (isNaN(b) || b === 'undefined') {
+					b = MAX_BRIGHT;
+				}
+				data += (time_index + ',' + led_index + ',' + c + ',' + b + ';');
 			});
 		});
 		localStorage['atp_data_' + seconds] = data;

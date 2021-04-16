@@ -6,7 +6,6 @@ var project_name = 'Untitled 1';
 var dom_color_pallet = document.getElementById('color_pallet');
 var dom_selection = document.getElementById('select_pallet');
 
-var editor_datas = [];
 var prev_datas = [];
 
 function onFileChoose(input) {
@@ -326,9 +325,9 @@ function export_data() {
 
 	target_t = target_t + TIME_TICKS;
 	getAsData(TIME_TICKS);
-
-	var blob = new Blob(bin_data, { type: "application/octet-stream" });
-	downloadBlob(blob);
+console.log(bin_data);
+	//var blob = new Blob(bin_data, { type: "application/octet-stream" });
+	//downloadBlob(blob);
 }
 
 function get_composed_all() {
