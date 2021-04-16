@@ -309,13 +309,13 @@ function export_data() {
 				target_t = start_t + TIME_TICKS * (last_t_idx + 1);
 
 				dt = target_t - last_t;
-				console.log('APPEND', target_t, dt, 'CLEAR');
+				//console.log('APPEND', target_t, dt, 'CLEAR');
 				getAsData(dt);
 				last_t = target_t;
 			}
 			target_t = start_t + TIME_TICKS * t_idx;
 			dt = target_t - last_t;
-			console.log('APPEND', target_t, dt, t_datas[t_idx]);
+			//console.log('APPEND', target_t, dt, t_datas[t_idx]);
 			getAsData(dt, t_datas[t_idx]);
 			last_t_idx = t_idx;
 			last_t = target_t;
@@ -325,9 +325,8 @@ function export_data() {
 
 	target_t = target_t + TIME_TICKS;
 	getAsData(TIME_TICKS);
-console.log(bin_data);
-	//var blob = new Blob(bin_data, { type: "application/octet-stream" });
-	//downloadBlob(blob);
+	var blob = new Blob(bin_data, { type: "application/octet-stream" });
+	downloadBlob(blob);
 }
 
 function get_composed_all() {
