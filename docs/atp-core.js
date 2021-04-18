@@ -656,11 +656,22 @@ function init_table() {
 
 
 $(document).ready(function() {
-	init_table();
-	loadLocalStorage();
-	if (localStorage['atp_file_name']) {
-		message('[' + localStorage['atp_file_name'] + '] 를 불러왔습니다. ('+getSize() + '% 사용됨)');
+	let d = getParameterByName('d');
+	if (d) {
+		let td = parseInt(d);
+		if (isNaN(td) || (new Date().getTime()) > td + 30000) {
+			location.replace(location.origin + location.pathname + '?d=' + (new Date().getTime()));
+			return;
+		}
+		init_table();
+		loadLocalStorage();
+		if (localStorage['atp_file_name']) {
+			message('[' + localStorage['atp_file_name'] + '] 를 불러왔습니다. (' + getSize() + '% 사용됨)');
+		} else {
+			message('디자이너가 준비되었습니다.');
+		}
 	} else {
-		message('디자이너가 준비되었습니다.');
+		location.replace(location.origin + location.pathname + '?d=' + (new Date().getTime()));
+		return;
 	}
 });
