@@ -59,8 +59,3 @@ $(".custom-select")[0].value = LED_VIEW_SIZE;
 $(".custom-select")[1].value = TIMELINE_SIZE;
 $(".custom-select")[2].value = LED_CHANNELS;
 $(".custom-select")[3].value = LED_MAX_SIZE;
-
-window.onbeforeunload = function() {
-	syncData();
-	return 'Are you sure you want to leave?';
-};
