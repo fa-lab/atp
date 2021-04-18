@@ -17,7 +17,6 @@ function paste_block() {
 		message('복사된 셀이 없습니다.');
 		return;
 	}
-		
 
 	let row_offset = -1;
 	let col_offset = -1;
@@ -35,7 +34,6 @@ function paste_block() {
 		}
 	}
 
-	console.log(row_offset, col_offset);
 	if (row_offset == -1 && col_offset == -1) {
 		return;
 	}
@@ -127,6 +125,7 @@ window.onkeyup = function(e) {
 	var keyCode = e.keyCode;
 
 	if (keyCode == 46) { // Del
+		recordAction();
 		delSelection();
 		saveLocalStorage();
 	} else if (keyCode == 17) { // Ctrl
@@ -189,19 +188,20 @@ window.onkeyup = function(e) {
 			break;
 		case 67: // 'c'
 			if (IS_CTRL_PRESSED) {
-				console.log('copy');
+				recordAction();
 				copy_block();
 			}
 			break;
 		case 86: // 'v'
 			if (IS_CTRL_PRESSED) {
-				console.log('paste');
+				recordAction();
 				paste_block();
 			}
 			break;
 		case 90: // 'z'
 			if (IS_CTRL_PRESSED) {
 				console.log('revert');
+				// revertAction();
 			}
 			break;
 		case 96:
@@ -316,6 +316,8 @@ document.getElementById('designer').onmousedown = function(e) {
 			dom_selection.startX = e.clientX + window.scrollX;
 			dom_selection.startY = e.clientY + window.scrollY;
 		}
+	} else {
+		recordAction();
 	}
 	IS_MOUSE_DOWN = true;
 };

@@ -226,7 +226,6 @@ function load_project(jsonTxT) {
 	}
 	saveLocalStorage();
 	location.reload();
-	//update_table();
 }
 
 function save_project() {
@@ -406,8 +405,49 @@ var table_labels = [];
 var table_selected = [];
 
 var table_copied = [];
+var table_last_actions = [];
 
 
+function recordAction() {
+	if (table_last_actions.length > 10) {
+		table_last_actions.shift();
+	}
+	let last_elems = {};
+	for (let row = 0; row < LED_VIEW_SIZE; row++) {
+		for (let col = 0; col < TIMELINE_SIZE * TIME_DIV; col++) {
+			if (table_elements[row][col].hasAttribute('led_color')) {
+
+				if (!last_elems[row])
+					last_elems[row] = {};
+
+				if (!last_elems[row][col])
+					last_elems[row][col] = [];
+
+				last_elems[row][col].push([table_elements[row][col].getAttribute('led_color'), table_elements[row][col].getAttribute('led_bright')]);
+			}
+		}
+	}
+	table_last_actions.push(last_elems);
+
+	console.log(table_last_actions);
+}
+
+function revertAction() {
+	if (table_last_actions.length > 0) {
+		let revert_table = table_last_actions.pop();
+
+		for (let row = 0; row < LED_VIEW_SIZE; row++) {
+			for (let col = 0; col < TIMELINE_SIZE * TIME_DIV; col++) {
+				if (revert_table[row] && revert_table[row][col]) {
+
+					console.log(revert_table[row][col]);
+				}else{
+					
+				}
+			}
+		}
+	}
+}
 
 function getData(row, col) {
 	let seconds = TIMELINE_OFFSET + Math.floor(col / TIME_DIV);
@@ -508,6 +548,7 @@ function delData(row, col) {
 }
 
 function update_table() {
+	table_last_actions = [];
 	clearSelection();
 	// Label update
 	for (let i = 0; i < table_labels.length; i++) {
@@ -523,7 +564,7 @@ function update_table() {
 			table_labels[i].className = 'br meta';
 
 		}
-		table_labels[i].innerHTML = '(' + led_ch + ') ' + led_idx;
+		table_labels[i].innerHTML = '(' + (led_ch+1) + ') ' + (led_idx+1);
 	}
 
 	// Timeline update
