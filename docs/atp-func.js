@@ -1,6 +1,15 @@
+function save_config() {
+	localStorage['atp_led_view_size'] = LED_VIEW_SIZE;
+	localStorage['atp_timeline_size'] = TIMELINE_SIZE;
+	localStorage['atp_led_max_size'] = LED_MAX_SIZE;
+	localStorage['atp_led_channels'] = LED_CHANNELS;
+}
+
 function change_ch(e) {
 	if (confirm("기존 내용이 사라집니다. LED 채널을 변경합니까?")) {
-		localStorage['atp_led_channels'] = e.value;
+		localStorage.clear();
+		LED_CHANNELS = parseInt(e.value);
+		save_config();
 		location.reload();
 	} else {
 		e.value = LED_CHANNELS;
@@ -9,7 +18,9 @@ function change_ch(e) {
 
 function change_max(e) {
 	if (confirm("기존 내용이 사라집니다. LED 개수를 변경합니까?")) {
-		localStorage['atp_led_max_size'] = e.value;
+		localStorage.clear();
+		LED_MAX_SIZE = parseInt(e.value);
+		save_config();
 		location.reload();
 	} else {
 		e.value = LED_MAX_SIZE;
@@ -17,8 +28,9 @@ function change_max(e) {
 }
 
 function change_timeline(e) {
-	if (confirm("기존 내용이 사라집니다. 타임라인를 변경합니까?")) {
-		localStorage['atp_timeline_size'] = e.value;
+	if (confirm("타임라인를 변경합니까?")) {
+		TIMELINE_SIZE = parseInt(e.value);
+		save_config();
 		location.reload();
 	} else {
 		e.value = TIMELINE_SIZE;
@@ -26,8 +38,9 @@ function change_timeline(e) {
 }
 
 function change_led_view(e) {
-	if (confirm("기존 내용이 사라집니다. 뷰를 변경합니까?")) {
-		localStorage['atp_led_view_size'] = e.value;
+	if (confirm("뷰 크기를 변경합니까?")) {
+		LED_VIEW_SIZE = parseInt(e.value);
+		save_config();
 		location.reload();
 	} else {
 		e.value = LED_VIEW_SIZE;

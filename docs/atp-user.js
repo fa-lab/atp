@@ -3,6 +3,90 @@
 var DRAW_SELECTION_BOX = false;
 var SELECTION_BOX_ACTIONS = false;
 
+function message(msg) {
+	let tl = document.getElementById('message-box');
+	if (msg) {
+		tl.innerHTML = msg;
+	} else {
+		tl.innerHTML = '&nbsp;';
+	}
+}
+
+function paste_block() {
+	if (table_copied.length == 0) {
+		message('복사된 셀이 없습니다.');
+		return;
+	}
+		
+
+	let row_offset = -1;
+	let col_offset = -1;
+	for (let row = 0; row < LED_VIEW_SIZE; row++) {
+		for (let col = 0; col < TIMELINE_SIZE * TIME_DIV; col++) {
+			if (table_elements[row][col].hovered) {
+				row_offset = row;
+				col_offset = col;
+				break;
+			}
+		}
+
+		if (row_offset != -1 && col_offset != -1) {
+			break;
+		}
+	}
+
+	console.log(row_offset, col_offset);
+	if (row_offset == -1 && col_offset == -1) {
+		return;
+	}
+	clearSelection();
+	for (let i = 0; i < table_copied.length; i++) {
+		let row = table_copied[i][0] + row_offset;
+		let col = table_copied[i][1] + col_offset;
+
+		if (row >= 0 && row < LED_VIEW_SIZE && col < (TIMELINE_SIZE * TIME_DIV) && col >= 0) {
+			// console.log(row, col);
+			table_elements[row][col].setAttribute('led_color', table_copied[i][2]);
+			table_elements[row][col].setAttribute('led_bright', table_copied[i][3]);
+			table_elements[row][col].setAttribute('title', BRIGHT_MAP[parseInt(table_copied[i][3])] + ' %');
+		}
+	}
+	syncData();
+	saveLocalStorage();
+	message('붙여넣었습니다.');
+}
+
+function copy_block() {
+	if (table_selected.length == 0) {
+		message('선택된 셀이 없습니다.');
+		return;
+	}
+
+	table_copied = [];
+	let min_row = LED_VIEW_SIZE;
+	let min_col = TIMELINE_SIZE * TIME_DIV;
+	for (let i = 0; i < table_selected.length; i++) {
+		let row = parseInt(table_selected[i].getAttribute('row'));
+		let col = parseInt(table_selected[i].getAttribute('col'));
+
+		if (min_col > col) {
+			min_row = row;
+			min_col = col;
+		} else if (min_col == col) {
+			if (min_row > row) {
+				min_row = row;
+			}
+		}
+		table_copied.push([row, col, table_selected[i].getAttribute('led_color'), table_selected[i].getAttribute('led_bright')]);
+	}
+
+	for (let i = 0; i < table_copied.length; i++) {
+
+		table_copied[i][0] -= min_row;
+		table_copied[i][1] -= min_col;
+	}
+	message('복사되었습니다.');
+}
 
 function move_block(row_offset, col_offset) {
 	// console.log('move_block', table_selected, row_offset, col_offset);
@@ -103,6 +187,18 @@ window.onkeyup = function(e) {
 			break;
 		case 64: // 'a'
 			break;
+		case 67: // 'c'
+			if (IS_CTRL_PRESSED) {
+				console.log('copy');
+				copy_block();
+			}
+			break;
+		case 86: // 'v'
+			if (IS_CTRL_PRESSED) {
+				console.log('paste');
+				paste_block();
+			}
+			break;
 		case 90: // 'z'
 			if (IS_CTRL_PRESSED) {
 				console.log('revert');
@@ -169,7 +265,6 @@ window.onkeydown = function(evt) {
 			break;
 		case 17: // Ctrl
 			IS_CTRL_PRESSED = true;
-			console.log('Ctrl Pressed');
 			evt.preventDefault();
 			break;
 		case 38: // ArrowUp

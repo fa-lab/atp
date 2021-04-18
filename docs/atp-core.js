@@ -146,10 +146,36 @@ function new_project() {
 	}
 }
 
+if (localStorage['atp_led_view_size'])
+	LED_VIEW_SIZE = parseInt(localStorage['atp_led_view_size']);
+
+if (localStorage['atp_timeline_size'])
+	TIMELINE_SIZE = parseInt(localStorage['atp_timeline_size']);
+
+if (localStorage['atp_led_max_size'])
+	LED_MAX_SIZE = parseInt(localStorage['atp_led_max_size']);
+
+if (localStorage['atp_led_channels'])
+	LED_CHANNELS = parseInt(localStorage['atp_led_channels']);
+
+
 function load_project(jsonTxT) {
 	let fj_result = JSON.parse(jsonTxT);
 	let editor_datas = fj_result.project_data;
 	designer_data = {};
+
+	if (fj_result.led_view_size)
+		localStorage['atp_led_view_size'] = parseInt(fj_result.led_view_size);
+
+	if (fj_result.timeline_size)
+		localStorage['atp_timeline_size'] = parseInt(fj_result.timeline_size);
+
+	if (fj_result.led_max_size)
+		localStorage['atp_led_max_size'] = parseInt(fj_result.led_max_size);
+
+	if (fj_result.led_channels)
+		localStorage['atp_led_channels'] = parseInt(fj_result.led_channels);
+
 	if (fj_result.project_version === 'v1') {
 		// v1
 		// console.log('version', 'v1');
@@ -186,18 +212,19 @@ function load_project(jsonTxT) {
 				}
 				data = data.split(';');
 				for (let i = 0; i < data.length; i++) {
-					let r_data = data[i].split(',', 3);
+					let r_data = data[i].split(',', 4);
 					let seconds = parseInt(key.slice(9));
 					let time_idx = parseInt(r_data[0]);
 					let led_idx = parseInt(r_data[1]);
-					let value = r_data[2];
+					let value = r_data[2] + ',' + r_data[3];
 					putDataRaw(seconds, time_idx, led_idx, value);
 				}
 			}
 		});
 	}
 	saveLocalStorage();
-	update_table();
+	location.reload();
+	//update_table();
 }
 
 function save_project() {
@@ -218,7 +245,11 @@ function save_project() {
 	let result = {
 		project_version: project_version,
 		project_name: project_name,
-		project_data: editor_datas
+		project_data: editor_datas,
+		led_view_size: LED_VIEW_SIZE,
+		timeline_size: TIMELINE_SIZE,
+		led_max_size: LED_MAX_SIZE,
+		led_channels: LED_CHANNELS
 	};
 
 	result = JSON.stringify(result);
@@ -370,8 +401,9 @@ var designer_data = {};
 var table_elements = [];
 var table_timelines = [];
 var table_labels = [];
-
 var table_selected = [];
+
+var table_copied = [];
 
 
 
@@ -423,7 +455,6 @@ function syncData() {
 
 		}
 	}
-
 }
 function putDataRaw(seconds, time_idx, led_idx, value) {
 	if (led_idx >= LED_MAX_SIZE * LED_CHANNELS) {
@@ -565,9 +596,15 @@ function init_table() {
 
 			t_cell.colSpan = '1';
 			t_cell.style.height = CELL_SIZE + 'px';
+			t_cell.hovered = false;
+			t_cell.onmouseout = function(e) {
+				t_cell.hovered = false;
+			}
 			t_cell.onmouseover = function(e) {
-				if (!IS_MOUSE_DOWN)
+				t_cell.hovered = true;
+				if (!IS_MOUSE_DOWN) {
 					return;
+				}
 				if (EDITOR_MODE == EDITOR_WRITE_MODE) {
 					this.setAttribute('led_color', CURRENT_COLOR);
 					this.setAttribute('led_bright', CURRENT_BRIGHT);
