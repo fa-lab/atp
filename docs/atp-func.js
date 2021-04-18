@@ -84,7 +84,7 @@ function delSelection() {
 
 function clearSelection() {
 	for (let i = 0; i < table_selected.length; i++) {
-		table_selected[i].className = table_selected[i].className.replace('selected', '');
+		table_selected[i].className = table_selected[i].className.replace('selected', '').trim();
 	}
 	table_selected = [];
 }

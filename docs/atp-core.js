@@ -423,29 +423,37 @@ function recordAction() {
 				if (!last_elems[row][col])
 					last_elems[row][col] = [];
 
-				last_elems[row][col].push([table_elements[row][col].getAttribute('led_color'), table_elements[row][col].getAttribute('led_bright')]);
+				last_elems[row][col] = [table_elements[row][col].getAttribute('led_color'), table_elements[row][col].getAttribute('led_bright')];
 			}
 		}
 	}
 	table_last_actions.push(last_elems);
-
-	console.log(table_last_actions);
 }
 
 function revertAction() {
+	clearSelection();
 	if (table_last_actions.length > 0) {
 		let revert_table = table_last_actions.pop();
 
 		for (let row = 0; row < LED_VIEW_SIZE; row++) {
 			for (let col = 0; col < TIMELINE_SIZE * TIME_DIV; col++) {
 				if (revert_table[row] && revert_table[row][col]) {
-
-					console.log(revert_table[row][col]);
-				}else{
-					
+					table_elements[row][col].setAttribute('led_color', revert_table[row][col][0]);
+					table_elements[row][col].setAttribute('led_bright', revert_table[row][col][1]);
+				} else {
+					if (table_elements[row][col].hasAttribute('led_color')) {
+						table_elements[row][col].removeAttribute('led_color');
+						table_elements[row][col].removeAttribute('led_bright');
+					}
 				}
 			}
 		}
+		syncData();
+		saveLocalStorage();
+		message('되돌렸습니다.');
+	} else {
+
+		message('더이상 되돌릴수 없습니다.');
 	}
 }
 
@@ -564,7 +572,7 @@ function update_table() {
 			table_labels[i].className = 'br meta';
 
 		}
-		table_labels[i].innerHTML = '(' + (led_ch+1) + ') ' + (led_idx+1);
+		table_labels[i].innerHTML = '(' + (led_ch + 1) + ') ' + (led_idx + 1);
 	}
 
 	// Timeline update

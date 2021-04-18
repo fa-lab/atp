@@ -184,26 +184,6 @@ window.onkeyup = function(e) {
 				onModeChanged();
 			}
 			break;
-		case 64: // 'a'
-			break;
-		case 67: // 'c'
-			if (IS_CTRL_PRESSED) {
-				recordAction();
-				copy_block();
-			}
-			break;
-		case 86: // 'v'
-			if (IS_CTRL_PRESSED) {
-				recordAction();
-				paste_block();
-			}
-			break;
-		case 90: // 'z'
-			if (IS_CTRL_PRESSED) {
-				console.log('revert');
-				// revertAction();
-			}
-			break;
 		case 96:
 			change_bright(1);
 			break;
@@ -299,6 +279,47 @@ window.onkeydown = function(evt) {
 			update_table();
 			evt.preventDefault();
 			break;
+		case 65: // 'a'
+			if (IS_CTRL_PRESSED) {
+				if (EDITOR_MODE != EDITOR_SELECT_MODE) {
+					EDITOR_MODE = EDITOR_SELECT_MODE;
+					onModeChanged();
+				}
+				clearSelection();
+				message('전체를 선택했습니다.');
+				for (let row = 0; row < LED_VIEW_SIZE; row++) {
+					for (let col = 0; col < TIMELINE_SIZE * TIME_DIV; col++) {
+						if (table_elements[row][col].hasAttribute('led_color')) {
+							table_selected.push(table_elements[row][col]);
+						}
+					}
+				}
+				for (let i = 0; i < table_selected.length; i++) {
+					table_selected[i].className = (table_selected[i].className.replace('selected', '') + ' selected').trim();
+				}
+				evt.preventDefault();
+			}
+			break;
+		case 67: // 'c'
+			if (IS_CTRL_PRESSED) {
+				recordAction();
+				copy_block();
+				evt.preventDefault();
+			}
+			break;
+		case 86: // 'v'
+			if (IS_CTRL_PRESSED) {
+				recordAction();
+				paste_block();
+				evt.preventDefault();
+			}
+			break;
+		case 90: // 'z'
+			if (IS_CTRL_PRESSED) {
+				revertAction();
+				evt.preventDefault();
+			}
+			break;
 	}
 };
 
@@ -340,6 +361,7 @@ document.getElementById('designer').onmouseup = function(e) {
 		let box_bottom = Math.max(dom_selection.row, t_row);
 
 		if (SELECTION_BOX_ACTIONS) {
+			recordAction();
 			if (e.button == 0) { // Left
 				move_block(t_row - dom_selection.row, t_col - dom_selection.col);
 			} else if (e.button == 2) { // Right
