@@ -10,6 +10,8 @@ var prev_datas = [];
 
 function onFileChoose(input) {
 	if (input.files && input.files[0]) {
+		localStorage['atp_file_name'] = input.files[0].name;
+
 		var oFReader = new FileReader();
 		oFReader.readAsText(input.files[0]);
 		oFReader.onload = function(oFREvent) {
@@ -656,4 +658,9 @@ function init_table() {
 $(document).ready(function() {
 	init_table();
 	loadLocalStorage();
+	if (localStorage['atp_file_name']) {
+		message('[' + localStorage['atp_file_name'] + '] 를 불러왔습니다.');
+	} else {
+		message('디자이너가 준비되었습니다.');
+	}
 });
