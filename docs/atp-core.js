@@ -719,6 +719,10 @@ $(document).ready(function() {
 		} else {
 			message('디자이너가 준비되었습니다.');
 		}
+		window.onbeforeunload = function() {
+			syncData();
+			return 'Are you sure you want to leave?';
+		};
 	} else {
 		location.replace(location.origin + location.pathname + '?d=' + (new Date().getTime()));
 		return;
