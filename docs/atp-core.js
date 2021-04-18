@@ -152,7 +152,7 @@ function load_project(jsonTxT) {
 	designer_data = {};
 	if (fj_result.project_version === 'v1') {
 		// v1
-		console.log('version', 'v1');
+		// console.log('version', 'v1');
 		for (let page = 0; page < editor_datas.length; page++) {
 			let editor_data = editor_datas[page];
 			let start_t = page * 10;
@@ -173,10 +173,10 @@ function load_project(jsonTxT) {
 
 			});
 		}
-		console.log('load done', 'v1');
+		// console.log('load done', 'v1');
 	} else if (fj_result.project_version === 'v2') {
 		// v2
-		console.log('version', 'v2');
+		// console.log('version', 'v2');
 		Object.entries(editor_datas).forEach(ele => {
 			const [key, val] = ele;
 			if (key.startsWith('atp_data_')) {
@@ -292,7 +292,7 @@ function export_data() {
 		}
 	}
 	let kys = Object.keys(t_datas);
-	console.log(kys[kys.length - 1]);
+	// console.log(kys[kys.length - 1]);
 
 	// time_index
 	// led_ch
@@ -407,7 +407,7 @@ function syncData() {
 			}
 
 			if (table_elements[row][col].hasAttribute('led_color')) {
-				console.log('add synced');
+				//console.log('add synced');
 				designer_data[seconds][time_idx][led_idx] = table_elements[row][col].getAttribute('led_color') + ',' + table_elements[row][col].getAttribute('led_bright');
 			} else {
 				delete designer_data[seconds][time_idx][led_idx];
@@ -597,7 +597,7 @@ function init_table() {
 						this.removeAttribute('led_color');
 						this.removeAttribute('led_bright');
 						this.removeAttribute('title');
-						console.log('del', row, col);
+						// console.log('del', row, col);
 						delData(row, col);
 					}
 				}

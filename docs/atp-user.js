@@ -5,7 +5,7 @@ var SELECTION_BOX_ACTIONS = false;
 
 
 function move_block(row_offset, col_offset) {
-	console.log('move_block', table_selected, row_offset, col_offset);
+	// console.log('move_block', table_selected, row_offset, col_offset);
 	if (table_selected.length == 0)
 		return;
 	let targets = [];
@@ -26,7 +26,7 @@ function move_block(row_offset, col_offset) {
 		let col = targets[i][1];
 
 		if (row >= 0 && row < LED_VIEW_SIZE && col < (TIMELINE_SIZE * TIME_DIV) && col >= 0) {
-			console.log(row, col);
+			// console.log(row, col);
 			table_elements[row][col].setAttribute('led_color', targets[i][2]);
 			table_elements[row][col].setAttribute('led_bright', targets[i][3]);
 			table_elements[row][col].setAttribute('title', BRIGHT_MAP[parseInt(targets[i][3])] + ' %');
@@ -46,7 +46,7 @@ window.onkeyup = function(e) {
 		delSelection();
 		saveLocalStorage();
 	} else if (keyCode == 17) { // Ctrl
-		console.log('Ctrl Released');
+		// console.log('Ctrl Released');
 		IS_CTRL_PRESSED = false;
 	} else if (keyCode == 27) { // Escape
 		clearSelection();
