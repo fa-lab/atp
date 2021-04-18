@@ -1,3 +1,17 @@
+function getSize() {
+	let sz = 0;
+	for (var i = 0; i < localStorage.length; i++) {
+		let key = localStorage.key(i);
+		sz += key.length;
+		sz += localStorage[key].length;
+	}
+	return Math.round(sz / (5 * 1000 * 1000) * 100);
+}
+
+function check_quota() {
+	alert((100 - getSize()) + '% 남았습니다.');
+}
+
 function save_config() {
 	localStorage['atp_led_view_size'] = LED_VIEW_SIZE;
 	localStorage['atp_timeline_size'] = TIMELINE_SIZE;
