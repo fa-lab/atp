@@ -219,6 +219,22 @@ window.onkeyup = function(e) {
 window.onkeydown = function(evt) {
 	let max_offset = LED_CHANNELS * LED_MAX_SIZE - LED_VIEW_SIZE
 	switch (evt.keyCode) {
+		case 36: // Home
+			if (TIMELINE_OFFSET == 0) {
+				return;
+			} else {
+				TIMELINE_OFFSET -= 5;
+				if (TIMELINE_OFFSET < 0)
+					TIMELINE_OFFSET = 0;
+				update_table();
+				evt.preventDefault();
+			}
+			break;
+		case 35: // End
+			TIMELINE_OFFSET += 5;
+			update_table();
+			evt.preventDefault();
+			break;
 		case 33: // PageUp
 			if (LED_OFFSET == 0) {
 				return;
