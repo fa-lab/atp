@@ -2,3 +2,5 @@
 /libraries/
 /core/
 /spec.d
+/build/
+/sdkconfig.old
