@@ -1,11 +1,11 @@
 #include "buffer.h"
 
-static uint8_t *buffer_ptr = 0;
-static unsigned long buffer_total_w = 0;
-static unsigned long buffer_total_r = 0;
-static unsigned long buffer_size = 0;
-static unsigned long buffer_index_w = 0;
-static unsigned long buffer_index_r = 0;
+static volatile uint8_t *buffer_ptr = 0;
+static volatile unsigned long buffer_total_w = 0;
+static volatile unsigned long buffer_total_r = 0;
+static volatile unsigned long buffer_size = 0;
+static volatile unsigned long buffer_index_w = 0;
+static volatile unsigned long buffer_index_r = 0;
 
 void buffer_init(uint8_t *ptr, uint32_t size) {
   buffer_ptr = ptr;

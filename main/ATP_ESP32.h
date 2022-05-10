@@ -1,5 +1,6 @@
 #ifndef _ATP_ESP32_H_
 #define _ATP_ESP32_H_
+
 #include <Arduino.h>
 #include <FS.h>
 #include <SD_MMC.h>
@@ -9,7 +10,7 @@
 #include "buffer.h"
 #include "led_driver.h"
 
-#define DEBUG 1
+// #define DEBUG 1
 
 #ifdef DEBUG
 #define PRINT(x) Serial.print(x)

@@ -7,9 +7,9 @@ static boolean isConnected = false;
 static WiFiUDP udp;
 static TaskHandle_t Task1, Task2;
 
-static unsigned long offset_millis = 0;
-static unsigned long start_millis = 0;
-static unsigned long target_millis = 0;
+static volatile unsigned long offset_millis = 0;
+static volatile unsigned long start_millis = 0;
+static volatile unsigned long target_millis = 0;
 
 static String atpname = "Hello Node";
 static String ssid = "Jaeho's";
@@ -72,7 +72,7 @@ void setup() {
 
   while (!initMMC) {
     initMMC = true;
-    if (SD_MMC.begin()) {
+    if (SD_MMC.begin("/", false, true, BOARD_MAX_SDMMC_FREQ)) {
       cardType = SD_MMC.cardType();
       if (cardType == CARD_NONE) {
         PRINTLN("No SD card attached");
@@ -101,6 +101,7 @@ void setup() {
   }
   File f_config;
   if (!SD_MMC.exists("/config.txt")) {
+    PRINTLN("SAVE CONFIG");
     saveConfig();
   }
 
@@ -164,7 +165,7 @@ void setup() {
       PRINT(mystring);
       PRINT("  SIZE: ");
       PRINTLN(file.size());
-      scenarios[size_scenario++] = mystring.substring(1, mystring.length() - 4);
+      scenarios[size_scenario++] = mystring;
     }
     file = root.openNextFile();
   }
@@ -184,7 +185,13 @@ void setup() {
   PRINTLN(xPortGetCoreID());
 
   uint32_t buffer_size = ESP.getFreePsram();
-  uint8_t *buffer_ptr = (uint8_t *)ps_malloc(buffer_size);
+  // uint8_t *buffer_ptr = (uint8_t *)ps_malloc(buffer_size);
+  uint8_t *buffer_ptr = (uint8_t *)ps_malloc(4000000);
+  if (buffer_ptr == NULL) {
+    PRINTLN("Failed to allocated");
+  } else {
+    PRINTLN("allocated!!");
+  }
   buffer_init(buffer_ptr, buffer_size);
 
   xTaskCreatePinnedToCore(
@@ -214,6 +221,7 @@ void task_sd_reader(void *pvParameters) {
     if (state == STATE_REQUEST_SCENARIO) {
       File file;
       if (SD_MMC.exists(target_file)) {
+        PRINTLN("FILE Found");
         file = SD_MMC.open(target_file, FILE_READ);
         if (file) {
           state = STATE_READY;
@@ -229,6 +237,8 @@ void task_sd_reader(void *pvParameters) {
           }
           file.close();
         }
+      } else {
+        PRINTLN("FILE Not Found");
       }
 
       if (state == STATE_REQUEST_SCENARIO) {
@@ -316,7 +326,7 @@ void task_udp_server(void *pvParameters) {
               if (selected_index == -1) {
                 udp.print("Scenario Not Found");
               } else {
-                target_file = String("/" + scenarios[selected_index] + ".atp");
+                target_file = String("/" + scenarios[selected_index]);
                 state = STATE_REQUEST_SCENARIO;
               }
             }
